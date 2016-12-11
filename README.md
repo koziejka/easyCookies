@@ -9,10 +9,9 @@ Hope you like it :)
 ## Featuress
 
 ### cookies
-- add
-- subtract
-- mix
-- invert
+- get
+- set
+* expires (future)
 
 
 ## Documentation
