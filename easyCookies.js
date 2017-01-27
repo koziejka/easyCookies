@@ -1,7 +1,7 @@
 /*! easyCookies v1.1.0 | (c) Maciej Kozieja | https://github.com/koziejka/easyCookies */
 class Cookie {
     constructor(value, expires, path) {
-        this.value = value || value
+        this.value = value
         if (expires) {
             if (typeof expires == "string") this.expires = expires
             else this.expires = expires.toUTCString()
