@@ -17,7 +17,7 @@ Hope you like it :)
 
 ## Documentation
 
-### Reading cookie
+### Reading cookies
 
 ```javascript
 // document.cookie -> '1x1="foo";foo=%5B1,2,3,4%5D'
@@ -27,9 +27,9 @@ cookie.foo[0] // -> 1
 cookies // -> {"1x1": "foo", foo: [1,2,3,4]}
 ```
 
-If cookie does not exist value would be `undefined`.
+If cookie does not exist value would be `null`.
 
-### Saving cookie
+### Saving cookies
 
 You can save any javascript object that can be stringified by `JSON.stringify()`.
 
@@ -47,11 +47,11 @@ cookie.name = new Cookie(1)
 // document.cookie -> "name=1"
 ```
 
-Objects are converted to `JSON` and than encoded ( by `encodeURIComponent()` )
+Objects are converted to `JSON` and than encoded by `encodeURIComponent()`.
 
 ## Changelog
 
 ### 1.1.0
-- Renamed `cookies` to `cookie`
-- Rewrite geting cookies using regex
-- Added Cookie class used to set all properites of cookie
+- Renamed `cookies` to `cookie`.
+- Rewrite geting cookies using regex.
+- Added Cookie class used to set all properites of cookie.
