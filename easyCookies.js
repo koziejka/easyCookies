@@ -1,30 +1,46 @@
-const cookies = new Proxy({
-    readCookie(name) {
-        const cookies = document.cookie.split("; ")
-        if (cookies[0] == "") return undefined
-        for (let i = 0; i < cookies.length; i++) {
-            let temp = cookies[i].split("=")
-            if (temp[0] != name) continue
-            try {
-                return JSON.parse(decodeURIComponent(temp[1]))
-            } catch (error) {
-                return decodeURIComponent(temp[1])
-            }
+/*! easyCookies v1.1.0 | (c) Maciej Kozieja | https://github.com/koziejka/easyCookies */
+class Cookie {
+    constructor(value, expires, path) {
+        this.value = value || value
+        if (expires) {
+            if (typeof expires == "string") this.expires = expires
+            else this.expires = expires.toUTCString()
         }
-        return undefined
-    },
-    saveCookie(name, obj, expires) {
-        if (name == undefined) return
-        if (typeof obj == "object") obj = JSON.stringify(obj)
-        expires = expires ? "expires=" + expires.toUTCString() : ""
-        document.cookie = name + "=" + encodeURIComponent(obj) + ";" + expires
+        this.path = path || null
+        this.isCookie = true
     }
-
-}, {
-        get(obj, name) {
-            return obj.readCookie(name)
-        },
-        set(obj, name, val) {
-            obj.saveCookie(name, val)
+}
+const cookie = new Proxy({}, {
+    get(obj, name) {
+        const cookie = RegExp(`${name}=(.*?);`).exec(document.cookie + ';')
+        if (cookie == null) return null
+        return JSON.parse(decodeURIComponent(cookie[1]))
+    },
+    set(obj, name, val) {
+        let extra = ""
+        if (val.isCookie) {
+            if (val.expires) extra += `expires=${val.expires};`
+            if (val.path) extra += `path=${val.path};`
+            val = val.value
         }
-    })
+        if (typeof val == 'object') {
+            val = JSON.stringify(val)
+        } else if (typeof val == 'string') {
+            val = `"${val}"`
+        }
+        document.cookie = `${name}=${encodeURIComponent(val)};${extra}`
+    },
+    deleteProperty(obj, name) {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:01 GMT;`
+    }
+})
+Object.defineProperty(window, 'cookies', {
+    get() {
+        const obj = {}, regex = RegExp(/(\w)+=(.*?);/g), documentCookie = document.cookie + ';'
+        let cookie
+        while (cookie = regex.exec(documentCookie)) {
+            obj[cookie[1]] = JSON.parse(decodeURIComponent(cookie[2]))
+        }
+        return obj
+    }
+})
