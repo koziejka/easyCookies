@@ -43,6 +43,15 @@ cookie.name = 1
 // document.cookie -> "name=1"
 cookie.name = new Cookie("foo", new Date("1-1-2020"), "/")
 // document.cookie -> "name=%22foo%22;expires=Fri, 31 Dec 1999 23:00:00 GMT;path=/;"
+cookie.name = new Cookie(1)
+// document.cookie -> "name=1"
 ```
 
 Objects are converted to `JSON` and than encoded ( by `encodeURIComponent()` )
+
+## Changelog
+
+### 1.1.0
+- Renamed `cookies` to `cookie`
+- Rewrite geting cookies using regex
+- Added Cookie class used to set all properites of cookie
